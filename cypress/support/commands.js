@@ -24,17 +24,17 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-//Cypress.Commands.add('TesteAutomaticoDeTodosItens', () => {
-//    cy.get('#firstName').type('paulo')
-//        cy.get('#lastName').type('pinheiro')
-//        cy.get('#email').type('fredysoh@gmail.com')
-//        cy.get('#phone').type('969356410')
-//        cy.get('select').select('cursos') // usar select onde há campos de seleção
-//        cy.get('#email-checkbox').check()
-//        cy.get('#open-text-area').type('olá' ,{delay : 0})
-//        cy.get('button[type="submit"]').click() // vai pegar a classe botão e verificar qual o tipo de botão é , nesse caso submit para evitar erro com outros botões
+Cypress.Commands.add('TesteAutomaticoDeTodosItens', () => {
+   cy.get('#firstName').type('paulo')
+       cy.get('#lastName').type('pinheiro')
+       cy.get('#email').type('fredysoh@gmail.com')
+       cy.get('#phone').type('969356410')
+      cy.get('select').select('cursos') // usar select onde há campos de seleção
+       cy.get('#email-checkbox').check()
+      cy.get('#open-text-area').type('olá' ,{delay : 0})
+        cy.get('button[type="submit"]').click() // vai pegar a classe botão e verificar qual o tipo de botão é , nesse caso submit para evitar erro com outros botões
 
-//})
+})
 
 Cypress.Commands.add('TesteAutomaticoDeTodosItensManipulado', data => {
     cy.get('#firstName').type(data.firstName)

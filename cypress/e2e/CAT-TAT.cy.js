@@ -171,7 +171,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
         
       })
 
-      it.only('Marca o tipo de atendimento', () => {
+      it('Marca o tipo de atendimento', () => {
         //                                    função
         cy.get('input[type="radio"]').each((TipoAtendimento) => {      // each pega uma lista de elementos e percorre um por um dentro dele se cria uma função para 
           //guardar todos os elementos , no caso a função criada foi TipoAtendimento
@@ -185,23 +185,72 @@ describe('Central de Atendimento ao Cliente TAT', () => {
 
       it('validar ambos checkbox e depois desmarcar o ultimo ',() => {
 
-        cy.get('#check input[type="checkbox"]')
-        .as('checkboxes')
-        .check
+        cy.get('input[type="checkbox"]')  // vai marcar todas as opções de checkbox
+        .check()
+        .should('be.checked') // verifica se todas as opções de checkbox estão marcadas
+        .last() // vai pegar o ultimo checkbox
+        .uncheck() // vai desmarcar o ultimo checkbox 
+        .should('not.be.checked')
 
         //cy.get('#email-checkbox').check()
        // cy.get('#phone-checkbox').check()
        // cy.get('#phone-checkbox').uncheck()
 
+      })
 
+      it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário usando check ao inves de click',() => {
+        cy.get('#firstName').type('paulo')
+        cy.get('#lastName').type('pinheiro')
+        cy.get('#email').type('fredysoh@gmail.com')   
+        // não há numero de telefone
+        cy.get('select').select('cursos')
+        cy.get('#phone-checkbox').check() // pode ser usado também o comando .click , para que o teste de certo é necessario validar o phone como contato preferencial
+        cy.get('#open-text-area').type('olá')
+        //cy.get('button[type="submit"]').click() // vai pegar a classe botão e verificar qual o tipo de botão é , nesse caso submit para evitar erro com outros botões
+        cy.get('#phone-checkbox').check()
+        .should('be.checked')        
 
       })
 
-     
+      it('Seleciona um arquivo da pasta fixtures',() => {
+        cy.get('#file-upload') // seleciona o elemento input do tipo file
+          .selectFile('cypress/fixtures/example.json') // caminho do arquivo que vai ser anexado para o texte
+          // verificando com should
+       .should(input => {
+         expect(input[0].files[0].name).to.equal('example.json') //verifica se o caminho especificado contem o arqvuio com o nome example.json
+       
+        })
+      })
+
+      it('SELECIONA UM ARQUIVO SIMULANDO UM DRAG-AND-DROP (ARRASTAR E SOLTAR)',() => {
+        cy.get('input[type=file]')
+          .selectFile('cypress/fixtures/example.json' , {action: 'drag-drop'}) // {action: 'drag-drop'} simula arrastar o arquivo e soltar para fazer upload
+          .should(input => {
+            expect(input[0].files[0].name).to.equal('example.json') //verifica se o caminho especificado contem o arqvuio com o nome example.json
+         
+        }) 
+      })
+
+      it('Abrir a pagina politica de qualidade',() => {
+        cy.get('a[href="privacy.html"]')  // seleciona o link
+         .invoke('removeAttr', 'target') //Remove o atributo target para abrir na mesma aba , pois o target direciona a abertura da pagina em outra aba
+          .click()
+
+          cy.url().should('include', 'privacy.html'); // verifica se a url está correta    
+
+      
+          
+        
+      
+      
+        })
+
+      it.only('Abrir a pagina politica de qualidade sem click',() => {
+
+        cy.visit('./cypress-do-zero-a-nuvem/src/privacy.html'); // Acessa diretamente a página
+          cy.url().should('include', 'privacy.html'); // Verifica a URL sem a necessidade do click
+
+      })
+
 
 })
-
-
-
-
-
