@@ -231,7 +231,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
         }) 
       })
 
-      it('Abrir a pagina politica de qualidade',() => {
+      it.only('Abrir a pagina politica de qualidade removendo o target e clicando no link',() => {
         cy.get('a[href="privacy.html"]')  // seleciona o link
          .invoke('removeAttr', 'target') //Remove o atributo target para abrir na mesma aba , pois o target direciona a abertura da pagina em outra aba
           .click()
@@ -245,10 +245,17 @@ describe('Central de Atendimento ao Cliente TAT', () => {
       
         })
 
-      it.only('Abrir a pagina politica de qualidade sem click',() => {
+      it('testar polita de privacidade de forma independente',() => {
 
         cy.visit('./cypress-do-zero-a-nuvem/src/privacy.html'); // Acessa diretamente a página
           cy.url().should('include', 'privacy.html'); // Verifica a URL sem a necessidade do click
+
+      })
+
+      it('Abrir a pagina politica de privacidade em outra aba sem click',() => {
+        cy.contains('a','Política de Privacidade') //pegar palavras especificas
+        .should('have.attr','href','privacy.html') // tem o atributo href com valor privacy.html
+        .and('have.attr', 'target', '_blank') // and = e  tem o atributo do should e também tem o atributo target com valor blank
 
       })
 
